@@ -27,9 +27,9 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version> <!-- Güncel versiyon -->
+        <version>3.11.0</version>
         <configuration>
-          <release>21</release> <!-- release, source/target yerine kullanılır -->
+          <release>21</release>
         </configuration>
       </plugin>
     </plugins>

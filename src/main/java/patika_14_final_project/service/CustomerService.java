@@ -15,6 +15,6 @@ public class CustomerService {
     public void save(String name, String email, String password) {
         Customer customer = new Customer(name,email, PasswordUtil.hash(password));
         customerDao.save(customer);
-        System.out.println("Kayıt Basarili");
+        System.out.println("Kayıt Basarili ! ");
     }
 }

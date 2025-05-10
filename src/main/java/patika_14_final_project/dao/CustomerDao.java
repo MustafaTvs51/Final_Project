@@ -22,7 +22,7 @@ public class CustomerDao {
             """;
 
     private final String existByEmailScript = """
-            SELECT * FROM customer WHERE email = ? LIMIT = 1
+            SELECT * FROM customer WHERE email = ? 
             """;
 
     public void save(Customer customer) {
@@ -69,7 +69,6 @@ public class CustomerDao {
                 customer.setUpdatedDate(new Timestamp(rs.getDate("updateddate").getTime()).toLocalDateTime());
 
 
-
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -114,18 +113,44 @@ public class CustomerDao {
         String pgUser = "postgres";
         String pgPassword = "Mustafa1";
 
-        List<Customer> customerList = new ArrayList<>();
-
         try {
             Connection connection = DriverManager.getConnection(url, pgUser, pgPassword);
 
-            Statement stmt = connection.createStatement();
-
-            ResultSet rs = stmt.executeQuery(existByEmailScript);
+            PreparedStatement ps = connection.prepareStatement(existByEmailScript);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
             return rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
+
+    public Customer findByEmail(String email) {
+
+        String url = "jdbc:postgresql://localhost:5432/patika_store";
+        String pgUser = "postgres";
+        String pgPassword = "Mustafa1";
+        Customer customer = null;
+        try {
+            Connection connection = DriverManager.getConnection(url, pgUser, pgPassword);
+            PreparedStatement ps = connection.prepareStatement(existByEmailScript);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+
+            customer = new Customer();
+            customer.setId(rs.getLong("id"));
+            customer.setName(rs.getString("name"));
+            customer.setEmail(rs.getString("email"));
+            customer.setPassword(rs.getString("password"));
+            customer.setCreatedDate(new Timestamp(rs.getDate("createddate").getTime()).toLocalDateTime());
+            customer.setUpdatedDate(new Timestamp(rs.getDate("updateddate").getTime()).toLocalDateTime());
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customer;
+    }
+
 }

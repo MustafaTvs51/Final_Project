@@ -18,12 +18,32 @@ public class CustomerService {
 
         boolean isExist = customerDao.existByEmail(email);
 
-        if (isExist){
+        if (isExist) {
             throw new PatikaStoreException(ExceptionMessagesConstant.CUSTOMER_EMAIL_ALREADY_EXISTS);
         }
 
-        Customer customer = new Customer(name,email, PasswordUtil.hash(password));
+        Customer customer = new Customer(name, email, PasswordUtil.hash(password));
         customerDao.save(customer);
         System.out.println("Kayıt Basarili ! ");
+    }
+
+    public void login(String email, String password) {
+
+        boolean isExist = customerDao.existByEmail(email);
+
+        if (!isExist) {
+            throw new PatikaStoreException(ExceptionMessagesConstant.CUSTOMER_EMAIL_DOES_NOT_EXISTS);
+        }
+        String hashedPassword = PasswordUtil.hash(password);
+        Customer foundCustomer = customerDao.findByEmail(email);
+
+        if (foundCustomer != null) {
+            boolean passwordEquals = foundCustomer.getPassword().equals(hashedPassword);
+            if (!passwordEquals) {
+                throw new PatikaStoreException(ExceptionMessagesConstant.CUSTOMER_PASSWORD_DOES_NOT_MATCH);
+            } else {
+                System.out.println("Kullanici sisteme giris yapti ! ");
+            }
+        }
     }
 }

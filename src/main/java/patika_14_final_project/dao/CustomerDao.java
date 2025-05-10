@@ -21,6 +21,10 @@ public class CustomerDao {
             SELECT * FROM customer
             """;
 
+    private final String existByEmailScript = """
+            SELECT * FROM customer WHERE email = ? LIMIT = 1
+            """;
+
     public void save(Customer customer) {
 
         String url = "jdbc:postgresql://localhost:5432/patika_store";
@@ -100,5 +104,25 @@ public class CustomerDao {
             throw new RuntimeException(e);
         }
         return customerList;
+    }
+
+    public boolean existByEmail(String email) {
+        String url = "jdbc:postgresql://localhost:5432/patika_store";
+        String pgUser = "postgres";
+        String pgPassword = "Mustafa1";
+
+        List<Customer> customerList = new ArrayList<>();
+
+        try {
+            Connection connection = DriverManager.getConnection(url, pgUser, pgPassword);
+
+            Statement stmt = connection.createStatement();
+
+            ResultSet rs = stmt.executeQuery(existByEmailScript);
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

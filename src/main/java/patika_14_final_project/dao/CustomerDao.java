@@ -65,8 +65,10 @@ public class CustomerDao {
                 customer.setId(rs.getLong("id"));
                 customer.setName(rs.getString("name"));
                 customer.setEmail(rs.getString("email"));
-                // customer.setPassword(rs.getString("password"));
-                //customer.setCreatedDate(rs.getDate("createddate"));
+                customer.setCreatedDate(new Timestamp(rs.getDate("createddate").getTime()).toLocalDateTime());
+                customer.setUpdatedDate(new Timestamp(rs.getDate("updateddate").getTime()).toLocalDateTime());
+
+
 
             }
         } catch (SQLException e) {
@@ -95,8 +97,9 @@ public class CustomerDao {
                 customer.setId(rs.getLong("id"));
                 customer.setName(rs.getString("name"));
                 customer.setEmail(rs.getString("email"));
-                // customer.setPassword(rs.getString("password"));
-                //customer.setCreatedDate(rs.getDate("createddate"));
+                customer.setCreatedDate(new Timestamp(rs.getDate("createddate").getTime()).toLocalDateTime());
+                customer.setUpdatedDate(new Timestamp(rs.getDate("updateddate").getTime()).toLocalDateTime());
+
                 customerList.add(customer);
 
             }

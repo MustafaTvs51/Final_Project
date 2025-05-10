@@ -21,7 +21,7 @@ public class CustomerService {
         if (isExist){
             throw new PatikaStoreException(ExceptionMessagesConstant.CUSTOMER_EMAIL_ALREADY_EXISTS);
         }
-        
+
         Customer customer = new Customer(name,email, PasswordUtil.hash(password));
         customerDao.save(customer);
         System.out.println("Kayıt Basarili ! ");

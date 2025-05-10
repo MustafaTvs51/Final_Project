@@ -2,8 +2,6 @@ package patika_14_final_project.exception;
 
 public class ExceptionMessagesConstant {
 
-
-
     private ExceptionMessagesConstant(){
     }
 

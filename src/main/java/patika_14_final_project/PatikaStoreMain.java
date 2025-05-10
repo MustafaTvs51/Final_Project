@@ -1,5 +1,6 @@
 package patika_14_final_project;
 
+import patika_14_final_project.exception.PatikaStoreException;
 import patika_14_final_project.service.CustomerService;
 
 import java.util.Scanner;
@@ -11,34 +12,39 @@ public class PatikaStoreMain {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
+            try {
 
-            System.out.println("===== PATIKA STORE HOŞ GELDINIZ =====");
-            System.out.println("1 - Musteri Kaydı ");
-            System.out.println("2 - Gırıs Yap ");
-            System.out.println("0 - Cıkıs ");
 
-            System.out.print("SECIM YAPINIZ : ");
+                System.out.println("===== PATIKA STORE HOŞ GELDINIZ =====");
+                System.out.println("1 - Musteri Kaydı ");
+                System.out.println("2 - Gırıs Yap ");
+                System.out.println("0 - Cıkıs ");
 
-            String choice = scanner.nextLine();
+                System.out.print("SECIM YAPINIZ : ");
 
-            switch (choice) {
-                case "1":
-                    savaCustomer(scanner);
-                    break;
-                case "2":
-                    loginCustomer(scanner);
-                    break;
-                case "0":
-                    System.out.println("Cıkıs Yapılıyor ... ");
-                    return;
-                default:
-                    System.out.println("Gecersiz Secim.");
+                String choice = scanner.nextLine();
 
+                switch (choice) {
+                    case "1":
+                        savaCustomer(scanner);
+                        break;
+                    case "2":
+                        loginCustomer(scanner);
+                        break;
+                    case "0":
+                        System.out.println("Cıkıs Yapılıyor ... ");
+                        return;
+                    default:
+                        System.out.println("Gecersiz Secim.");
+
+                }
+            }catch (PatikaStoreException e){
+                System.out.println(e.getMessage());
             }
         }
     }
 
-    private static void loginCustomer(Scanner scanner) {
+    private static void loginCustomer(Scanner scanner) throws PatikaStoreException {
         System.out.print("E-mail : ");
         String email = scanner.nextLine();
 
@@ -50,7 +56,7 @@ public class PatikaStoreMain {
 
     }
 
-    public static void savaCustomer(Scanner scanner) {
+    public static void savaCustomer(Scanner scanner) throws PatikaStoreException {
 
         System.out.print("Isım : ");
         String name = scanner.nextLine();

@@ -28,6 +28,7 @@ public class PasswordUtil {
                 builder.append('0');
 
             }
+            builder.append(hex);
         }
         return builder.toString();
     }

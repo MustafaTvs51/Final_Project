@@ -14,7 +14,7 @@ public class CustomerService {
         customerDao = new CustomerDao();
     }
 
-    public void save(String name, String email, String password) {
+    public void save(String name, String email, String password) throws PatikaStoreException {
 
         boolean isExist = customerDao.existByEmail(email);
 
@@ -27,7 +27,7 @@ public class CustomerService {
         System.out.println("Kayıt Basarili ! ");
     }
 
-    public void login(String email, String password) {
+    public void login(String email, String password) throws PatikaStoreException {
 
         boolean isExist = customerDao.existByEmail(email);
 

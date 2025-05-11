@@ -1,13 +1,32 @@
 package patika_14_final_project.dao;
 
+import patika_14_final_project.dao.Constants.SqlScriptConstants;
 import patika_14_final_project.model.User;
+import patika_14_final_project.model.enums.Role;
+import patika_14_final_project.util.DBUtil;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
-public class UserDAO implements BaseDAO<User>{
+public class UserDAO implements BaseDAO<User> {
 
     @Override
     public void save(User user) {
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.USER_SAVE)) {
+            ps.setString(1,user.getUsername());
+            ps.setString(2,user.getPassword());
+            ps.setString(3,user.getRole().name());
+            ps.setBoolean(4, user.getActive());
+            ps.executeUpdate();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -30,8 +49,26 @@ public class UserDAO implements BaseDAO<User>{
     public void delete(long id) {
 
     }
-    public  User findByUserName(String userName) {
-       User user = null;
-return user;
+
+    public User findByUserName(String userName) {
+        User user = null;
+
+        try (Connection connection = DBUtil.getConnection();
+        PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.USER_FIND_BY_NAME)){
+            ps.setString(1,userName);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+                user.setId(rs.getLong("id"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setRole(Role.valueOf(rs.getString("role")));
+                user.setActive(rs.getBoolean("active"));
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return user;
     }
 }

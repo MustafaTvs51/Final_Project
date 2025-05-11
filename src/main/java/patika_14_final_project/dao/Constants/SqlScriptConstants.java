@@ -36,6 +36,16 @@ public class SqlScriptConstants {
     public static final String PRODUCT_SEARCH_BY_NAME = """
             SELECT * FROM product WHERE name LIKE ?
             """;
+
+    public static final String USER_SAVE = """
+            INSERT INTO users (username , password , role , active )
+            VALUES (?,?,?,?)
+            """;
+
+    public static final String USER_FIND_BY_NAME = """
+            SELECT * FROM users WHERE username = ? 
+            """;
+
 }
 
 

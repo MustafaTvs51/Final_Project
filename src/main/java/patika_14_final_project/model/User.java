@@ -12,19 +12,28 @@ public class User {
 
     private Role role;
 
-    private  boolean active;
+    private Boolean active;
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
         this.role = Role.SUPPORT;
-
+        this.active = true;
     }
 
     public User(String username, String password, Role role) {
         this.username = username;
         this.password = password;
         this.role = role;
+        this.active = true;
     }
 
     public Long getId() {

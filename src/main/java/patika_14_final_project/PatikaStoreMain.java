@@ -1,5 +1,6 @@
 package patika_14_final_project;
 
+import patika_14_final_project.exception.ExceptionMessagesConstant;
 import patika_14_final_project.exception.PatikaStoreException;
 import patika_14_final_project.model.User;
 import patika_14_final_project.model.enums.Role;
@@ -100,7 +101,86 @@ public class PatikaStoreMain {
         System.out.print("Şifre Giriniz : ");
         String password = scanner.nextLine();
 
-        userService.login(userName, password);
+        User loginedUser = userService.login(userName, password);
+
+        if (loginedUser != null && loginedUser.getActive()) {
+            getLoginedUserMenu();
+
+        } else {
+            throw new RuntimeException(ExceptionMessagesConstant.USER_IS_NOT_ACTIVE);
+        }
+    }
+
+    private static void getLoginedUserMenu() {
+        while (true) {
+            System.out.println("===== LOGİN OLAN KULLANICI MENÜSÜ =====");
+            System.out.println("1 - Kategori Oluştur");
+            System.out.println("2 - Kategori Listele ");
+            System.out.println("3 - Kategori Sil ");
+            System.out.println("4 - Ürün Oluştur");
+            System.out.println("5 - Ürün Listele");
+            System.out.println("6 - Ürün Sil");
+            System.out.println("7 - Sipariş Listele");
+            System.out.println("0 - Geri");
+            System.out.print("Seçim Yapınız :");
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1":
+                    createCategory();
+                    break;
+                case "2":
+                    categoryDelete();
+                    break;
+                case "3":
+                    categoryList();
+                    break;
+                case "4":
+                    productCreate();
+                    break;
+                case "5":
+                    productList();
+                    break;
+                case "6":
+                    productDelete();
+                    break;
+                case "7":
+                    orederList();
+                    break;
+                case "0":
+                    return;
+                default:
+                    System.out.println("Gecersiz Secim.");
+            }
+
+        }
+
+    }
+
+    private static void orederList() {
+    }
+
+    private static void productDelete() {
+    }
+
+    private static void productList() {
+
+    }
+
+    private static void productCreate() {
+
+    }
+
+    private static void categoryList() {
+
+    }
+
+    private static void categoryDelete() {
+
+    }
+
+    private static void createCategory() {
+
     }
 
     private static void registerUser() throws PatikaStoreException {

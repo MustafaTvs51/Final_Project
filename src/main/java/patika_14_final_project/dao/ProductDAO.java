@@ -38,6 +38,19 @@ public class ProductDAO implements BaseDAO<Product>{
 
     @Override
     public void save(Product product) {
+        try (Connection connection = DBUtil.getConnection();
+        PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.PRODUCT_SAVE)){
+            ps.setString(1,product.getName());
+            ps.setBigDecimal(2,product.getPrice());
+            ps.setInt(3,product.getStock());
+            ps.setLong(4,product.getCategory().getId());
+            ps.setLong(5,product.getCreatedUser().getId());
+            ps.setLong(6,product.getUpdatedUser().getId());
+            ps.executeQuery();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 

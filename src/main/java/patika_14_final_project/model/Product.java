@@ -1,6 +1,6 @@
 package patika_14_final_project.model;
 
-import jdk.jfr.Category;
+import patika_14_final_project.model.Category;
 
 import java.math.BigDecimal;
 

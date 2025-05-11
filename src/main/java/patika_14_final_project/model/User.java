@@ -14,6 +14,13 @@ public class User {
 
     private  boolean active;
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.role = Role.SUPPORT;
+
+    }
+
     public User(String username, String password, Role role) {
         this.username = username;
         this.password = password;

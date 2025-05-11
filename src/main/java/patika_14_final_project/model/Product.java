@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 
 public class Product extends BaseModel{
 
+    public Product() {
+    }
 
     private  String name;
     private BigDecimal price;

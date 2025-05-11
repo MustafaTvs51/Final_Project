@@ -18,6 +18,9 @@ public class User {
         return active;
     }
 
+    public User() {
+    }
+
     public void setActive(Boolean active) {
         this.active = active;
     }

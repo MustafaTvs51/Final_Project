@@ -58,6 +58,8 @@ public class UserDAO implements BaseDAO<User> {
             ps.setString(1,userName);
             ResultSet rs = ps.executeQuery();
 
+            user = new User();
+
             while (rs.next()){
                 user.setId(rs.getLong("id"));
                 user.setUsername(rs.getString("username"));

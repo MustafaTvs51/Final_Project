@@ -10,7 +10,7 @@ public class ExceptionMessagesConstant {
     public static final String CUSTOMER_EMAIL_ALREADY_EXISTS = "Musteri email'i zaten zaten kayitli.";
 
     public static final String USER_EMAIL_DOES_NOT_EXISTS = "Girilen email ile bir kullanici bulunamamaktadir." ;
-    public static final String USER_PASSWORD_DOES_NOT_MATCH ="Girilen sifre ve ya email bilgisi yanlıs ! ";
+    public static final String USER_PASSWORD_DOES_NOT_MATCH ="Girilen sifre ve ya kullanıcı bilgisi yanlıs ! ";
     public static final String USER_EMAIL_ALREADY_EXISTS = "Girilen email  zaten zaten kayitli.";
 
 }

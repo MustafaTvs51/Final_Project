@@ -16,16 +16,18 @@ public class UserService {
     public UserService() {
         userDAO = new UserDAO();
     }
-    public void save(String userName , String password) throws PatikaStoreException {
+
+    public void save(String userName, String password, Role role) throws PatikaStoreException {
         User foundUser = userDAO.findByUserName(userName);
-        if (foundUser != null){
+        if (foundUser != null) {
             throw new PatikaStoreException(ExceptionMessagesConstant.USER_EMAIL_ALREADY_EXISTS);
         }
-         userDAO.save(new User(userName,PasswordUtil.hash(password), Role.SUPPORT));
+        userDAO.save(new User(userName, PasswordUtil.hash(password), role));
+        System.out.println("Kayıt Başarılı");
 
     }
 
-    public User login(String userName, String password) throws PatikaStoreException {
+    public void login(String userName, String password) throws PatikaStoreException {
         User foundUser = userDAO.findByUserName(userName);
 
         if (foundUser != null) {
@@ -36,7 +38,7 @@ public class UserService {
         } else {
             throw new PatikaStoreException(ExceptionMessagesConstant.USER_PASSWORD_DOES_NOT_MATCH);
         }
-        return foundUser;
-
+        System.out.println("Giriş Başarılı ! ");
+        System.out.println("Hoş Geldin ! " + foundUser.getUsername());
     }
 }

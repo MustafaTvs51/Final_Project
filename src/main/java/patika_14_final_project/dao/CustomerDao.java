@@ -1,39 +1,18 @@
 package patika_14_final_project.dao;
 
+import patika_14_final_project.dao.Constants.SqlScriptConstants;
 import patika_14_final_project.model.Customer;
+import patika_14_final_project.util.DBUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerDao {
-
-    private final String saveScript = """
-            INSERT INTO customer (name,email,password) VALUES (?,?,?)
-            """;
-
-    private final String findByIdScript = """
-            SELECT * FROM customer WHERE id = ?
-            
-            """;
-
-    private final String findAllScript = """
-            SELECT * FROM customer
-            """;
-
-    private final String existByEmailScript = """
-            SELECT * FROM customer WHERE email = ? 
-            """;
+public class CustomerDao implements BaseDAO<Customer>{
 
     public void save(Customer customer) {
-
-        String url = "jdbc:postgresql://localhost:5432/patika_store";
-        String pgUser = "postgres";
-        String pgPassword = "Mustafa1";
-
-        try {
-            Connection connection = DriverManager.getConnection(url, pgUser, pgPassword);
-            PreparedStatement ps = connection.prepareStatement(saveScript);
+        try (Connection connection = DBUtil.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.CUSTOMER_SAVE);
             ps.setString(1, customer.getName());
             ps.setString(2, customer.getEmail());
             ps.setString(3, customer.getPassword());
@@ -41,22 +20,17 @@ public class CustomerDao {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
     }
 
     public Customer findById(long id) {
-
-        String url = "jdbc:postgresql://localhost:5432/patika_store";
-        String pgUser = "postgres";
-        String pgPassword = "Mustafa1";
         Customer customer = null;
 
-        try {
-            Connection connection = DriverManager.getConnection(url, pgUser, pgPassword);
+        try (Connection connection = DBUtil.getConnection()) {
 
-            PreparedStatement ps = connection.prepareStatement(findByIdScript);
+            PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.CUSTOMER_FIND_BY_ID);
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
 
@@ -71,7 +45,7 @@ public class CustomerDao {
 
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return customer;
     }
@@ -79,16 +53,10 @@ public class CustomerDao {
     public List<Customer> findAll() {
 
         List<Customer> customerList = new ArrayList<>();
-
-        String url = "jdbc:postgresql://localhost:5432/patika_store";
-        String pgUser = "postgres";
-        String pgPassword = "Mustafa1";
-
-        try {
-            Connection connection = DriverManager.getConnection(url, pgUser, pgPassword);
+        try (Connection connection = DBUtil.getConnection();) {
 
             Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(findAllScript);
+            ResultSet rs = stmt.executeQuery(SqlScriptConstants.CUSTOMER_FIND_ALL);
 
             while (rs.next()) {
 
@@ -103,23 +71,30 @@ public class CustomerDao {
 
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return customerList;
     }
 
+    @Override
+    public void update(Customer customer) {
+
+    }
+
+    @Override
+    public void delete(long id) {
+
+    }
+
     public boolean existByEmail(String email) {
-        String url = "jdbc:postgresql://localhost:5432/patika_store";
-        String pgUser = "postgres";
-        String pgPassword = "Mustafa1";
 
-        try {
-            Connection connection = DriverManager.getConnection(url, pgUser, pgPassword);
+        try (Connection connection = DBUtil.getConnection()) {
 
-            PreparedStatement ps = connection.prepareStatement(existByEmailScript);
+            PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.CUSTOMER_EXIST_BY_EMAIL);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             return rs.next();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -128,13 +103,10 @@ public class CustomerDao {
 
     public Customer findByEmail(String email) {
 
-        String url = "jdbc:postgresql://localhost:5432/patika_store";
-        String pgUser = "postgres";
-        String pgPassword = "Mustafa1";
         Customer customer = null;
-        try {
-            Connection connection = DriverManager.getConnection(url, pgUser, pgPassword);
-            PreparedStatement ps = connection.prepareStatement(existByEmailScript);
+        try (Connection connection = DBUtil.getConnection();) {
+
+            PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.CUSTOMER_EXIST_BY_EMAIL);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
 

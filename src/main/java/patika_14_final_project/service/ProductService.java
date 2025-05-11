@@ -6,7 +6,7 @@ public class ProductService {
 
     private final ProductDAO productDAO;
 
-    public ProductService(ProductDAO productDAO) {
-        this.productDAO = productDAO;
+    public ProductService() {
+        this.productDAO = new ProductDAO();
     }
 }

@@ -2,13 +2,25 @@ package patika_14_final_project.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Order extends BaseModel {
-
+    public Order() {
+        this.orderDate = LocalDateTime.now();
+    }
 
     private Customer customer;
     private BigDecimal totalAmount;
     private LocalDateTime orderDate;
+    private List<Product> products;
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 
     public Order(Customer customer) {
         this.customer = customer;

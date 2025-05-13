@@ -1,0 +1,88 @@
+CREATE TABLE category(
+
+id 		SERIAL PRIMARY KEY,
+name 	VARCHAR(255) NOT NULL,
+cratedDate date default current_date,
+updateDate date default current_date
+);
+
+CREATE TABLE product(
+
+id 			SERIAL PRIMARY KEY,
+name 		VARCHAR(255) NOT NULL,
+private 	NUMERIC(10, 2),
+stock 		INT,
+category_id INT REFERENCES category(id),
+cratedDate date default current_date,
+updateDate date default current_date
+
+);
+
+CREATE TABLE customer(
+
+id 			SERIAL PRIMARY KEY,
+name 		varchar(255) NOT NULL,
+email 		varchar(255) NOT NULL,
+password 	varchar(255) NOT NULL,
+cratedDate date default current_date,
+updateDate date default current_date
+);
+
+CREATE TABLE "order"(
+
+id 				SERIAL PRIMARY KEY ,
+customer_id INT REFERENCES customer(id),
+order_date 		timestamp,
+total_amount 	numeric(10, 2),
+cratedDate date default current_date,
+updateDate date default current_date
+);
+
+CREATE TABLE payment (
+
+id SERIAL 		PRIMARY KEY,
+order_id INT 	REFERENCES "order"(id),
+payment_method 	VARCHAR(50),
+amount numeric 	(10, 2) NOT NULL ,
+cratedDate date default current_date,
+updateDate date default current_date
+);
+
+
+
+  
+
+  
+-- USERS TABLE
+
+
+
+
+
+CREATE TABLE users
+(
+id SERIAL PRIMARY KEY,
+username VARCHAR(100) unique NOT NULL,
+password VARCHAR (200)		  NOT NULL,	      		
+role VARCHAR(100)			 NOT NULL,	
+active boolean default true
+);
+
+
+
+ALTER TABLE category ADD COLUMN updated_by INT REFERENCES users(id);
+ALTER TABLE category ADD COLUMN created_by INT REFERENCES users(id);
+
+ALTER TABLE product ADD COLUMN updated_by INT REFERENCES users(id);
+ALTER TABLE product ADD COLUMN created_by INT REFERENCES users(id);
+
+
+
+
+
+
+
+
+
+
+

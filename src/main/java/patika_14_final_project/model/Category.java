@@ -4,6 +4,12 @@ public class Category extends BaseModel {
     public Category() {
     }
 
+    public Category(Long id , String name) {
+        this.setId(id);
+        this.name = name;
+    }
+
+
     private String name;
 
     public Category(String name) {
@@ -22,5 +28,13 @@ public class Category extends BaseModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id ='" + getId() + '\'' +
+                "name='" + name + '\'' +
+                '}';
     }
 }

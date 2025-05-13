@@ -4,6 +4,7 @@ public class ExceptionMessagesConstant {
 
 
 
+
     private ExceptionMessagesConstant(){
     }
 
@@ -17,5 +18,7 @@ public class ExceptionMessagesConstant {
 
     public static final String USER_IS_NOT_ADMIN = "Giriş yapan kullanıcı ADMIN rolüne sahip değildir.";
     public static final String USER_IS_NOT_ACTIVE = "Kullanıcı aktif değil ya da bulunamadı ! ";
+
+    public static final String CATEGORY_NOT_FOUND = "Kategori bulunamadı";
 
 }

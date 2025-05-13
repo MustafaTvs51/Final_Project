@@ -23,6 +23,7 @@ public class ProductService {
         product.setCreatedUser(user);
         product.setUpdatedUser(user);
         productDAO.save(product);
+
         System.out.println("Ürün Kaydedildi ! ");
 
     }

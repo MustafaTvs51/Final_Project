@@ -2,18 +2,32 @@ package patika_14_final_project;
 
 import patika_14_final_project.exception.ExceptionMessagesConstant;
 import patika_14_final_project.exception.PatikaStoreException;
+import patika_14_final_project.model.Category;
+import patika_14_final_project.model.Product;
 import patika_14_final_project.model.User;
 import patika_14_final_project.model.enums.Role;
+import patika_14_final_project.service.CategoryService;
 import patika_14_final_project.service.CustomerService;
+import patika_14_final_project.service.ProductService;
 import patika_14_final_project.service.UserService;
 import patika_14_final_project.util.PasswordUtil;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Scanner;
 
 public class PatikaStoreMain {
+
+    private static User LOGINNED_USER;
+
     private static final Scanner scanner = new Scanner(System.in);
 
     private static final UserService userService = new UserService();
+
+    private static final CategoryService categoryService = new CategoryService();
+
+    private static final ProductService productService = new ProductService();
+
 
     public static void main(String[] args) {
 
@@ -104,6 +118,9 @@ public class PatikaStoreMain {
         User loginedUser = userService.login(userName, password);
 
         if (loginedUser != null && loginedUser.getActive()) {
+
+            LOGINNED_USER = loginedUser;
+
             getLoginedUserMenu();
 
         } else {
@@ -111,12 +128,12 @@ public class PatikaStoreMain {
         }
     }
 
-    private static void getLoginedUserMenu() {
+    private static void getLoginedUserMenu() throws PatikaStoreException {
         while (true) {
             System.out.println("===== LOGİN OLAN KULLANICI MENÜSÜ =====");
             System.out.println("1 - Kategori Oluştur");
-            System.out.println("2 - Kategori Listele ");
-            System.out.println("3 - Kategori Sil ");
+            System.out.println("2 - Kategori Sil");
+            System.out.println("3 - Kategori Listele ");
             System.out.println("4 - Ürün Oluştur");
             System.out.println("5 - Ürün Listele");
             System.out.println("6 - Ürün Sil");
@@ -167,19 +184,42 @@ public class PatikaStoreMain {
 
     }
 
-    private static void productCreate() {
+    private static void productCreate() throws PatikaStoreException {
+        System.out.println("Ürün ismi  giriniz : ");
+        String name = scanner.nextLine();
+        System.out.println("Ürün fiyatını giriniz : ");
+        String price = scanner.nextLine();
+        System.out.println("Ürün stok bilgisi giriniz :");
+        String stock = scanner.nextLine();
+        System.out.println("Kategori id giriniz :");
+        String categoryId = scanner.nextLine();
+
+        Category category = categoryService.getById(Long.parseLong(categoryId));
+
+        Product product = new Product(name, new BigDecimal(price), Integer.parseInt(stock), category);
+
+        productService.save(product, LOGINNED_USER);
 
     }
 
     private static void categoryList() {
+        List<Category> categoryList = categoryService.getAll();
+
+        categoryList.forEach(System.out::println);
 
     }
 
     private static void categoryDelete() {
 
+        System.out.println("Kategori id giriniz:");
+        String categoryId = scanner.nextLine();
+
+        categoryService.deleteById(Long.parseLong(categoryId));
+
     }
 
-    private static void createCategory() {
+    private static void createCategory() throws PatikaStoreException {
+        throw new PatikaStoreException("Not Implemented");
 
     }
 

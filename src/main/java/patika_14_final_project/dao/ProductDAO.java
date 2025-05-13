@@ -46,7 +46,7 @@ public class ProductDAO implements BaseDAO<Product>{
             ps.setLong(4,product.getCategory().getId());
             ps.setLong(5,product.getCreatedUser().getId());
             ps.setLong(6,product.getUpdatedUser().getId());
-            ps.executeQuery();
+            ps.executeUpdate();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

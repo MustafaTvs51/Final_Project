@@ -10,7 +10,6 @@ import patika_14_final_project.service.CategoryService;
 import patika_14_final_project.service.CustomerService;
 import patika_14_final_project.service.ProductService;
 import patika_14_final_project.service.UserService;
-import patika_14_final_project.util.PasswordUtil;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -27,6 +26,7 @@ public class PatikaStoreMain {
     private static final CategoryService categoryService = new CategoryService();
 
     private static final ProductService productService = new ProductService();
+
 
 
     public static void main(String[] args) {
@@ -162,7 +162,7 @@ public class PatikaStoreMain {
                     productDelete();
                     break;
                 case "7":
-                    orederList();
+                    orderList();
                     break;
                 case "0":
                     return;
@@ -174,14 +174,28 @@ public class PatikaStoreMain {
 
     }
 
-    private static void orederList() {
+    private static void orderList() {
+
     }
 
     private static void productDelete() {
+        System.out.println("Silinecek ürün id'sini giriniz : ");
+        String productId = scanner.nextLine();
+
+
+        productService.deleteById(Long.parseLong(productId));
     }
 
     private static void productList() {
+        List<Product> products = productService.getAll();
 
+        System.out.println("\n==== ÜRÜN LİSTESİ ====");
+
+        products.forEach(product ->
+                System.out.printf("%s - %s - %s\n", product.getName(), product.getPrice(), product.getCategory().getName())
+        );
+
+        System.out.println("\n========");
     }
 
     private static void productCreate() throws PatikaStoreException {

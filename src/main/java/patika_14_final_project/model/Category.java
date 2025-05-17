@@ -1,6 +1,9 @@
 package patika_14_final_project.model;
 
 public class Category extends BaseModel {
+
+    private String name;
+
     public Category() {
     }
 
@@ -8,9 +11,6 @@ public class Category extends BaseModel {
         this.setId(id);
         this.name = name;
     }
-
-
-    private String name;
 
     public Category(String name) {
         this.name = name;

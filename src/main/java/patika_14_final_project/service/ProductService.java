@@ -7,6 +7,8 @@ import patika_14_final_project.model.Product;
 import patika_14_final_project.model.User;
 import patika_14_final_project.model.enums.Role;
 
+import java.util.List;
+
 public class ProductService {
 
     private final ProductDAO productDAO;
@@ -27,4 +29,13 @@ public class ProductService {
         System.out.println("Ürün Kaydedildi ! ");
 
     }
+    public List<Product> getAll() {
+        return productDAO.findAll();
+    }
+
+    public void deleteById(long id) {
+        productDAO.delete(id);
+        System.out.println("Ürün başarıyla silindi : " + id);
+    }
+
 }

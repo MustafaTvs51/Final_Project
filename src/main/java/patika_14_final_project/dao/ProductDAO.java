@@ -7,30 +7,39 @@ import patika_14_final_project.model.Customer;
 import patika_14_final_project.model.Product;
 import patika_14_final_project.util.DBUtil;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDAO implements BaseDAO<Product> {
+    private Product getProduct(ResultSet rs) throws SQLException {
+        Long id = rs.getLong("id");
+        String name = rs.getString("name");
+        BigDecimal price = rs.getBigDecimal("price");
+        int stock = rs.getInt("stock");
+        Long categoryId = rs.getLong("category_id");
+        String categoryName = rs.getString("category_name");
+
+        Category category = new Category();
+        category.setId(categoryId);
+        category.setName(categoryName);
+
+        return new Product(id, name, price, stock, category);
+    }
 
     public List<Product> searchByName(String name) {
         List<Product> products = new ArrayList<>();
 
-        try (Connection connection = DBUtil.getConnection()) {
-
-            PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.PRODUCT_SEARCH_BY_NAME);
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.PRODUCT_SEARCH_BY_NAME))  {
             ps.setString(1, "%" + name + "%");
             ResultSet rs = ps.executeQuery();
+
             while (rs.next()) {
-                Product p = new Product();
-                p.setId(rs.getLong("id"));
-                p.setName(rs.getString("name"));
-                p.setPrice(rs.getBigDecimal("price"));
-                p.setStock(rs.getInt("stock"));
-                p.setCreatedDate(LocalDateTime.parse(rs.getString("createddate")));
-                p.setUpdatedDate(LocalDateTime.parse(rs.getString("updateddate")));
-                products.add(p);
+                products.add(getProduct(rs));
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -126,4 +135,6 @@ public class ProductDAO implements BaseDAO<Product> {
         }
         return 0;
     }
+
+
 }

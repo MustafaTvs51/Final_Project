@@ -131,12 +131,14 @@ public class PatikaStoreMain {
         while (true) {
             System.out.println("===== LOGİN OLAN KULLANICI MENÜSÜ =====");
             System.out.println("1 - Kategori Oluştur");
-            System.out.println("2 - Kategori Sil");
-            System.out.println("3 - Kategori Listele ");
+            System.out.println("2 - Kategori Listele");
+            System.out.println("3 - Kategori Sil");
             System.out.println("4 - Ürün Oluştur");
             System.out.println("5 - Ürün Listele");
             System.out.println("6 - Ürün Sil");
-            System.out.println("7 - Sipariş Listele");
+            System.out.println("7 - Ürün Arama");
+            System.out.println("8 - Ürün filtreleme (Kategori Bazlı)");
+            System.out.println("9 - Sipariş Listele");
             System.out.println("0 - Geri");
             System.out.print("Seçim Yapınız :");
             String choice = scanner.nextLine();
@@ -146,10 +148,10 @@ public class PatikaStoreMain {
                     createCategory();
                     break;
                 case "2":
-                    categoryDelete();
+                    categoryList();
                     break;
                 case "3":
-                    categoryList();
+                    categoryDelete();
                     break;
                 case "4":
                     productCreate();
@@ -161,6 +163,12 @@ public class PatikaStoreMain {
                     productDelete();
                     break;
                 case "7":
+                    productSearch();
+                    break;
+                case "8":
+                    productFiltering();
+                    break;
+                case "9":
                     orderList();
                     break;
                 case "0":
@@ -171,6 +179,20 @@ public class PatikaStoreMain {
 
         }
 
+    }
+
+    private static void productSearch() {
+        System.out.println("Ürün ismi giriniz: ");
+        String searchProductName = scanner.nextLine();
+
+        List<Product> products = productService.search(searchProductName);
+
+        System.out.println("\n==== ÜRÜN LİSTESİ (Arama Sonucu)====");
+
+        products.forEach(product ->
+                System.out.printf("%s - %s - %s\n", product.getName(), product.getPrice(), product.getCategory().getName())
+                );
+        System.out.println("======");
     }
 
     private static void orderList() {
@@ -190,7 +212,7 @@ public class PatikaStoreMain {
 
         int page = 1;
 
-        do{
+        do {
             List<Product> products = productService.getAll(page);
 
             System.out.println("\n==== ÜRÜN LİSTESİ(Sayfa)" + page + "/" + totalPage + "====");
@@ -204,7 +226,7 @@ public class PatikaStoreMain {
             String pageStr = scanner.nextLine();
             page = Integer.parseInt(pageStr);
 
-        }while (page <= totalPage);
+        } while (page <= totalPage);
 
     }
 

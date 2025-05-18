@@ -1,5 +1,6 @@
 package patika_14_final_project.dao;
 
+import patika_14_final_project.constants.PatikaStoreConstants;
 import patika_14_final_project.dao.Constants.SqlScriptConstants;
 import patika_14_final_project.model.Category;
 import patika_14_final_project.model.Customer;
@@ -61,12 +62,17 @@ public class ProductDAO implements BaseDAO<Product> {
     }
 
     @Override
-    public List<Product> findAll() {
+    public List<Product> findAll(int page) {
         List<Product> products = new ArrayList<>();
         try (Connection connection = DBUtil.getConnection();
-             Statement stmt = connection.createStatement()) {
+             PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.PRODUCT_FIND_ALL)) {
 
-            ResultSet rs = stmt.executeQuery(SqlScriptConstants.PRODUCT_FIND_ALL);
+            int size = PatikaStoreConstants.PAGE_SIZE;
+            int offset = (page - 1) * size;
+            ps.setLong(1, size);
+            ps.setInt(2, offset);
+            ResultSet rs = ps.executeQuery();
+
 
             while (rs.next()) {
 
@@ -95,13 +101,29 @@ public class ProductDAO implements BaseDAO<Product> {
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.PRODUCT_DELETE)
         ) {
-            ps.setLong(1,id);
+            ps.setLong(1, id);
             ps.executeQuery();
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
 
         }
     }
 
+    public int findTotalPage() {
+        try (Connection connection = DBUtil.getConnection();
+             Statement stmt = connection.createStatement()) {
+
+            ResultSet rs = stmt.executeQuery(SqlScriptConstants.PRODUCT_TOTAL_PAGE_COUNT);
+            if (rs.next()){
+                int totalRows = rs.getInt(1); // 17
+                return (int) Math.ceil((double) totalRows / PatikaStoreConstants.PAGE_SIZE);
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

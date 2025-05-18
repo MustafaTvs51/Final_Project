@@ -50,12 +50,20 @@ public class SqlScriptConstants {
                 p.stock as stock,
                 c.id as category_id,
                 c.name as category_name
-                FROM product p, category c WHERE p.category_id = c.id
+            FROM product p,
+                 category c
+            WHERE p.category_id = c.id
+            ORDER BY p.id asc
+            LIMIT ? OFFSET ? ;
             """;
 
     public static final String PRODUCT_DELETE = """
             DELETE FROM product WHERE id = ?
             """;
+
+    public static final String PRODUCT_TOTAL_PAGE_COUNT = """
+            SELECT COUNT(*) FROM product
+            """ ;
 
     public static final String USER_SAVE = """
             INSERT INTO users (username , password , role , active )
@@ -67,7 +75,7 @@ public class SqlScriptConstants {
             """;
 
     public static final String CATEGORY_SAVE = """
-            INSERT INTI category  (name, created_by, updated_by)
+            INSERT INTO category  (name, created_by, updated_by)
             VALUES (?,?,?)
             """;
 

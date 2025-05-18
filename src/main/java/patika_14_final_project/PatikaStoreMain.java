@@ -28,7 +28,6 @@ public class PatikaStoreMain {
     private static final ProductService productService = new ProductService();
 
 
-
     public static void main(String[] args) {
 
         while (true) {
@@ -187,15 +186,26 @@ public class PatikaStoreMain {
     }
 
     private static void productList() {
-        List<Product> products = productService.getAll();
+        int totalPage = productService.getTotalPage();
 
-        System.out.println("\n==== ÜRÜN LİSTESİ ====");
+        int page = 1;
 
-        products.forEach(product ->
-                System.out.printf("%s - %s - %s\n", product.getName(), product.getPrice(), product.getCategory().getName())
-        );
+        do{
+            List<Product> products = productService.getAll(page);
 
-        System.out.println("\n========");
+            System.out.println("\n==== ÜRÜN LİSTESİ(Sayfa)" + page + "/" + totalPage + "====");
+
+            products.forEach(product ->
+                    System.out.printf("%s - %s - %s\n", product.getName(), product.getPrice(), product.getCategory().getName())
+            );
+            System.out.println("========");
+
+            System.out.println("Sonraki sayfa sayısı : ");
+            String pageStr = scanner.nextLine();
+            page = Integer.parseInt(pageStr);
+
+        }while (page <= totalPage);
+
     }
 
     private static void productCreate() throws PatikaStoreException {

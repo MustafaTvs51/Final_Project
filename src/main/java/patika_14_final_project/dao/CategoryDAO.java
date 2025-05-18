@@ -54,7 +54,7 @@ public class CategoryDAO implements BaseDAO<Category> {
     }
 
     @Override
-    public List<Category> findAll() {
+    public List<Category> findAll(int page) {
         List<Category> categoryList = new ArrayList<>();
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.CATEGORY_FIND_ALL);

@@ -32,7 +32,7 @@ public class OrderDAO implements BaseDAO<Order>{
     }
 
     @Override
-    public List<Order> findAll() {
+    public List<Order> findAll(int page) {
         return List.of();
     }
 

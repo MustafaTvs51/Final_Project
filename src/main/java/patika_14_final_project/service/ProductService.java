@@ -29,8 +29,8 @@ public class ProductService {
         System.out.println("Ürün Kaydedildi ! ");
 
     }
-    public List<Product> getAll() {
-        return productDAO.findAll();
+    public List<Product> getAll(int page) {
+        return productDAO.findAll(page);
     }
 
     public void deleteById(long id) {
@@ -38,4 +38,7 @@ public class ProductService {
         System.out.println("Ürün başarıyla silindi : " + id);
     }
 
+    public int getTotalPage() {
+        return productDAO.findTotalPage();
+    }
 }

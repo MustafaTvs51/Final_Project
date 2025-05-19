@@ -176,7 +176,7 @@ public class PatikaStoreMain {
                 default:
                     System.out.println("Gecersiz Secim.");
             }
-//TODO   searchbyName
+
         }
 
     }

@@ -14,20 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDAO implements BaseDAO<Product> {
-    private Product getProduct(ResultSet rs) throws SQLException {
-        Long id = rs.getLong("id");
-        String name = rs.getString("name");
-        BigDecimal price = rs.getBigDecimal("price");
-        int stock = rs.getInt("stock");
-        Long categoryId = rs.getLong("category_id");
-        String categoryName = rs.getString("category_name");
-
-        Category category = new Category();
-        category.setId(categoryId);
-        category.setName(categoryName);
-
-        return new Product(id, name, price, stock, category);
-    }
 
     public List<Product> searchByName(String name) {
         List<Product> products = new ArrayList<>();
@@ -136,5 +122,18 @@ public class ProductDAO implements BaseDAO<Product> {
         return 0;
     }
 
+    private Product getProduct(ResultSet rs) throws SQLException {
+        Long id = rs.getLong("id");
+        String name = rs.getString("name");
+        BigDecimal price = rs.getBigDecimal("price");
+        int stock = rs.getInt("stock");
+        Long categoryId = rs.getLong("category_id");
+        String categoryName = rs.getString("category_name");
 
+        Category category = new Category();
+        category.setId(categoryId);
+        category.setName(categoryName);
+
+        return new Product(id, name, price, stock, category);
+    }
 }

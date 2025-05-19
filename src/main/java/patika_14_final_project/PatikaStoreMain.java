@@ -166,7 +166,7 @@ public class PatikaStoreMain {
                     productSearch();
                     break;
                 case "8":
-                    productFiltering();
+                    //productFiltering();
                     break;
                 case "9":
                     orderList();
@@ -176,7 +176,7 @@ public class PatikaStoreMain {
                 default:
                     System.out.println("Gecersiz Secim.");
             }
-
+//TODO   searchbyName
         }
 
     }

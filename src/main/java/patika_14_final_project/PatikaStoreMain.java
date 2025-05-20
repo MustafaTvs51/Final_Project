@@ -2,15 +2,9 @@ package patika_14_final_project;
 
 import patika_14_final_project.exception.ExceptionMessagesConstant;
 import patika_14_final_project.exception.PatikaStoreException;
-import patika_14_final_project.model.Category;
-import patika_14_final_project.model.Customer;
-import patika_14_final_project.model.Product;
-import patika_14_final_project.model.User;
+import patika_14_final_project.model.*;
 import patika_14_final_project.model.enums.Role;
-import patika_14_final_project.service.CategoryService;
-import patika_14_final_project.service.CustomerService;
-import patika_14_final_project.service.ProductService;
-import patika_14_final_project.service.UserService;
+import patika_14_final_project.service.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -29,6 +23,8 @@ public class PatikaStoreMain {
     private static final CategoryService categoryService = new CategoryService();
 
     private static final ProductService productService = new ProductService();
+
+    private static final CartService cartService = new CartService();
 
 
     public static void main(String[] args) {
@@ -188,7 +184,7 @@ public class PatikaStoreMain {
         System.out.println("Kategori ismi giriniz : ");
         String categoryName = scanner.nextLine();
 
-        List<Product> products  = productService.getAllByCategoryName(categoryName);
+        List<Product> products = productService.getAllByCategoryName(categoryName);
 
         System.out.println("\n==== ÜRÜN LİSTESİ (Filtreleme Sonucu)====");
 
@@ -323,8 +319,10 @@ public class PatikaStoreMain {
             System.out.println("1 - Ürün Listele ");
             System.out.println("2 - Ürün Arama");
             System.out.println("3 - Ürün filtreleme (Kategori Bazlı)");
-            System.out.println("4 - Sipariş oluştur");
-            System.out.println("5 - Siparişleri listle");
+            System.out.println("4 - Sepete Ürün Ekle ");
+            System.out.println("5 - Sepeti Görüntüle");
+            System.out.println("6 - Sepeti Temizle");
+            System.out.println("7 - Siparişleri listle");
             System.out.println("0 - Geri");
             System.out.print("Seçim Yapınız :");
             String choice = scanner.nextLine();
@@ -340,9 +338,15 @@ public class PatikaStoreMain {
                     productFiltering();
                     break;
                 case "4":
-                    orderCreate();
+                    addProductToCart();
                     break;
                 case "5":
+                    listCart();
+                    break;
+                case "6":
+                    clearCart();
+                    break;
+                case "7":
                     orderList();
                     break;
                 case "0":
@@ -354,7 +358,59 @@ public class PatikaStoreMain {
         }
     }
 
-    private static void orderCreate() {
+    private static void clearCart() {
+    }
+
+    private static void listCart() {
+
+       List<Cart> carts =  cartService.getAll(LOGINNED_CUSTOMER);
+        System.out.println("\n==== Sepetteki Ürün Listesi ====");
+
+        carts.forEach(cart ->
+                System.out.printf("%s - %s - %s\n",
+                        cart.getItems().get(0).getProduct().getName(),
+                        cart.getQuantity(),
+                        cart.getTotalAmount()));
+
+        System.out.println("========");
+    }
+
+    private static void addProductToCart() throws PatikaStoreException {
+
+        boolean isContinue = true;
+
+        while (isContinue) {
+
+            System.out.println("Ürün adı giriniz : ");
+            String productName = scanner.nextLine();
+
+            Product product = productService.getByName(productName);
+
+            if (product == null) {
+                System.out.println("Ürün bulunamadı");
+            } else {
+                System.out.println("Adet giriniz : ");
+                int quantity = scanner.nextInt();
+
+                if (product.getStock() < quantity) {
+                    throw new PatikaStoreException(ExceptionMessagesConstant.PRODUCT_STOCK_IS_NOT_VALID);
+                }
+
+                scanner.nextLine();
+
+                cartService.addToCart(LOGINNED_CUSTOMER, product, quantity);
+
+                System.out.print("Sepetinize ürün eklemeye devam etmek ister misiniz (E/H)");
+                String yesNo = scanner.nextLine();
+
+                if (!"E".equalsIgnoreCase(yesNo)) {
+                    isContinue = false;
+
+                }
+            }
+        }
+
+
     }
 
     public static void registerCustomer() throws PatikaStoreException {

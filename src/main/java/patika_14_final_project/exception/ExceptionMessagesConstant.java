@@ -21,4 +21,8 @@ public class ExceptionMessagesConstant {
 
     public static final String CATEGORY_NOT_FOUND = "Kategori bulunamadı";
 
+
+
+    public static final String PRODUCT_STOCK_IS_NOT_VALID = "İstenilen ürünün yeterli stok adeti bulunmamaktadır !  ";
+
 }

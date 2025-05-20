@@ -78,6 +78,18 @@ ALTER TABLE product ADD COLUMN created_by INT REFERENCES users(id);
 
 
 
+CREATE TABLE cart(
+    id SERIAL PRIMARY KEY,
+    customer_id INT NOT NULL REFERENCES customer(id),
+    product_id INT NOT NULL REFERENCES product(id),
+    quantity INT NOT NULL,
+    createdDate         date default current_date,
+    updatedDate         date default current_date
+
+)
+
+
+
 
 
 

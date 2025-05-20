@@ -3,7 +3,23 @@ package patika_14_final_project.dao.Constants;
 public class SqlScriptConstants {
 
 
-
+    public static final String CART_FIND_BY_CUSTOMER_ID = """
+            SELECT * FROM cart WHERE customer_id = ?
+            """;
+    public static final String CART_SAVE = """
+            INSERT INTO cart (customer_id, product_id, quantity)
+            VALUES(?,?,?)
+            """;
+    public static final String CART_FIND_ALL_BY_CUSTOMER_ID = """
+            SELECT
+            	p.name as product_name,
+            	p.price as price,
+            	c.quantity as quantity
+            FROM cart c
+            		JOIN public.product p ON p.id = c.product_id
+            WHERE customer_id = ?
+            ORDER BY c.createddate DESC
+            """;
 
     private SqlScriptConstants() {
     }
@@ -64,6 +80,9 @@ public class SqlScriptConstants {
             WHERE p.category_id = c.id
             ORDER BY p.id asc
             LIMIT ? OFFSET ? ;
+            """;
+    public static final String PRODUCT_FIND_BY_NAME = """
+            SELECT * FROM product WHERE name = ?
             """;
 
     public static final String PRODUCT_DELETE = """

@@ -117,18 +117,11 @@ public class ProductDAO implements BaseDAO<Product> {
     }
 
     private Product getProduct(ResultSet rs) throws SQLException {
-        Long id = rs.getLong("id");
-        String name = rs.getString("name");
-        BigDecimal price = rs.getBigDecimal("price");
-        int stock = rs.getInt("stock");
-        Long categoryId = rs.getLong("category_id");
-        String categoryName = rs.getString("category_name");
-
-        Category category = new Category();
-        category.setId(categoryId);
-        category.setName(categoryName);
-
-        return new Product(id, name, price, stock, category);
+       return new Product(rs.getLong("id"),
+            rs.getString("name"),
+            rs.getBigDecimal("price"),
+            rs.getInt("stock"),
+            new Category(rs.getLong("category_id"),rs.getString("category_name")));
     }
 
     public List<Product> findAllByCategoryName(String categoryName) {
@@ -150,5 +143,30 @@ public class ProductDAO implements BaseDAO<Product> {
         return products;
     }
 
+    public Product findByName(String productName) {
+
+        Product product = null;
+
+        List<Product> products = new ArrayList<>();
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.PRODUCT_FIND_BY_NAME)) {
+            ps.setString(1, productName);
+            ResultSet rs = ps.executeQuery();
+
+
+            while (rs.next()) {
+                product = new Product(rs.getLong("id"),
+                        rs.getString("name"),
+                        rs.getBigDecimal("price"),
+                        rs.getInt("stock"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return product;
+    }
 }
+
 

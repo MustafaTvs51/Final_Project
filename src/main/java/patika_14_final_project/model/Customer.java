@@ -9,6 +9,10 @@ public class Customer  extends BaseModel {
     public Customer() {
     }
 
+    public Customer(Long id) {
+        this.setId(id);
+    }
+
     public Customer(String name, String email, String password) {
         this.name = name;
         this.email = email;

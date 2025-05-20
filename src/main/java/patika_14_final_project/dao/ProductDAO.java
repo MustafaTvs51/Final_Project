@@ -19,7 +19,7 @@ public class ProductDAO implements BaseDAO<Product> {
         List<Product> products = new ArrayList<>();
 
         try (Connection connection = DBUtil.getConnection();
-             PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.PRODUCT_SEARCH_BY_NAME))  {
+             PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.PRODUCT_SEARCH_BY_NAME)) {
             ps.setString(1, "%" + name + "%");
             ResultSet rs = ps.executeQuery();
 
@@ -46,7 +46,7 @@ public class ProductDAO implements BaseDAO<Product> {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
     }
@@ -70,17 +70,11 @@ public class ProductDAO implements BaseDAO<Product> {
 
 
             while (rs.next()) {
-
-                products.add(new Product(rs.getLong("id"),
-                        rs.getString("name"),
-                        rs.getBigDecimal("price"),
-                        rs.getInt("stock"),
-                        new Category(rs.getLong("category_id"), rs.getString("category_name"))
-                ));
+                products.add(getProduct(rs));
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
         return products;
@@ -110,7 +104,7 @@ public class ProductDAO implements BaseDAO<Product> {
              Statement stmt = connection.createStatement()) {
 
             ResultSet rs = stmt.executeQuery(SqlScriptConstants.PRODUCT_TOTAL_PAGE_COUNT);
-            if (rs.next()){
+            if (rs.next()) {
                 int totalRows = rs.getInt(1); // 17
                 return (int) Math.ceil((double) totalRows / PatikaStoreConstants.PAGE_SIZE);
             }
@@ -136,4 +130,25 @@ public class ProductDAO implements BaseDAO<Product> {
 
         return new Product(id, name, price, stock, category);
     }
+
+    public List<Product> findAllByCategoryName(String categoryName) {
+        List<Product> products = new ArrayList<>();
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.PRODUCT_FIND_BY_CATEGORY_NAME)) {
+            ps.setString(1, categoryName);
+            ResultSet rs = ps.executeQuery();
+
+
+            while (rs.next()) {
+                products.add(getProduct(rs));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return products;
+    }
+
 }
+

@@ -4,6 +4,7 @@ public class SqlScriptConstants {
 
 
 
+
     private SqlScriptConstants() {
     }
 
@@ -72,6 +73,17 @@ public class SqlScriptConstants {
     public static final String PRODUCT_TOTAL_PAGE_COUNT = """
             SELECT COUNT(*) FROM product
             """ ;
+    public static final String PRODUCT_FIND_BY_CATEGORY_NAME = """
+            SELECT p.id as id,
+                p.name as name,
+                p.price as price,
+                p.stock as stock,
+                c.id as category_id,
+                c.name as category_name
+            FROM product p
+                        JOIN category c ON c.id = p.category_id
+            WHERE c.name = ?
+            """;
 
     public static final String USER_SAVE = """
             INSERT INTO users (username , password , role , active )

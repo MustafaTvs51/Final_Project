@@ -3,6 +3,7 @@ package patika_14_final_project;
 import patika_14_final_project.exception.ExceptionMessagesConstant;
 import patika_14_final_project.exception.PatikaStoreException;
 import patika_14_final_project.model.Category;
+import patika_14_final_project.model.Customer;
 import patika_14_final_project.model.Product;
 import patika_14_final_project.model.User;
 import patika_14_final_project.model.enums.Role;
@@ -18,6 +19,8 @@ import java.util.Scanner;
 public class PatikaStoreMain {
 
     private static User LOGINNED_USER;
+
+    private static Customer LOGINNED_CUSTOMER;
 
     private static final Scanner scanner = new Scanner(System.in);
 
@@ -166,7 +169,7 @@ public class PatikaStoreMain {
                     productSearch();
                     break;
                 case "8":
-                    //productFiltering();
+                    productFiltering();
                     break;
                 case "9":
                     orderList();
@@ -181,6 +184,20 @@ public class PatikaStoreMain {
 
     }
 
+    private static void productFiltering() {
+        System.out.println("Kategori ismi giriniz : ");
+        String categoryName = scanner.nextLine();
+
+        List<Product> products  = productService.getAllByCategoryName(categoryName);
+
+        System.out.println("\n==== ÜRÜN LİSTESİ (Filtreleme Sonucu)====");
+
+        products.forEach(product ->
+                System.out.printf("%s - %s - %s\n", product.getName(), product.getPrice(), product.getCategory().getName())
+        );
+        System.out.println("======");
+    }
+
     private static void productSearch() {
         System.out.println("Ürün ismi giriniz: ");
         String searchProductName = scanner.nextLine();
@@ -191,7 +208,7 @@ public class PatikaStoreMain {
 
         products.forEach(product ->
                 System.out.printf("%s - %s - %s\n", product.getName(), product.getPrice(), product.getCategory().getName())
-                );
+        );
         System.out.println("======");
     }
 
@@ -300,8 +317,44 @@ public class PatikaStoreMain {
         String password = scanner.nextLine();
 
         CustomerService customerService = new CustomerService();
-        customerService.login(email, password);
+        LOGINNED_CUSTOMER = customerService.login(email, password);
 
+        while (true) {
+            System.out.println("1 - Ürün Listele ");
+            System.out.println("2 - Ürün Arama");
+            System.out.println("3 - Ürün filtreleme (Kategori Bazlı)");
+            System.out.println("4 - Sipariş oluştur");
+            System.out.println("5 - Siparişleri listle");
+            System.out.println("0 - Geri");
+            System.out.print("Seçim Yapınız :");
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1":
+                    productList();
+                    break;
+                case "2":
+                    productSearch();
+                    break;
+                case "3":
+                    productFiltering();
+                    break;
+                case "4":
+                    orderCreate();
+                    break;
+                case "5":
+                    orderList();
+                    break;
+                case "0":
+                    return;
+                default:
+                    System.out.println("Geçersiz Seçim");
+
+            }
+        }
+    }
+
+    private static void orderCreate() {
     }
 
     public static void registerCustomer() throws PatikaStoreException {

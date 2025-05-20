@@ -27,7 +27,7 @@ public class CustomerService {
         System.out.println("Kayıt Basarili ! ");
     }
 
-    public void login(String email, String password) throws PatikaStoreException {
+    public Customer login(String email, String password) throws PatikaStoreException {
 
         boolean isExist = customerDao.existByEmail(email);
 
@@ -45,5 +45,6 @@ public class CustomerService {
                 System.out.println("Kullanici sisteme giris yapti ! ");
             }
         }
+        return foundCustomer;
     }
 }

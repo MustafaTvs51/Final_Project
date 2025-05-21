@@ -39,4 +39,11 @@ public class CartService {
         System.out.print("Ürün Sepetinize Eklendi\n");
     }
 
+    public void clear(Customer loginnedCustomer) {
+        Cart cart = cartDAO.findByCustomerId(loginnedCustomer.getId());
+
+        int effectedRow = cartItemDAO.clear(cart.getId());
+
+        System.out.println("Sepetinizdeki "+ effectedRow + " adet ürün silindi\n");
+    }
 }

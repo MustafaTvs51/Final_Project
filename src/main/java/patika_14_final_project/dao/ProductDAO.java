@@ -34,7 +34,7 @@ public class ProductDAO implements BaseDAO<Product> {
     }
 
     @Override
-    public void save(Product product) {
+    public long save(Product product) {
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.PRODUCT_SAVE)) {
             ps.setString(1, product.getName());
@@ -48,7 +48,7 @@ public class ProductDAO implements BaseDAO<Product> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+return 0;
     }
 
     @Override

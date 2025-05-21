@@ -3,6 +3,7 @@ package patika_14_final_project;
 import patika_14_final_project.exception.ExceptionMessagesConstant;
 import patika_14_final_project.exception.PatikaStoreException;
 import patika_14_final_project.model.*;
+import patika_14_final_project.model.enums.PaymentMethod;
 import patika_14_final_project.model.enums.Role;
 import patika_14_final_project.service.*;
 
@@ -28,6 +29,7 @@ public class PatikaStoreMain {
 
     private static final CartItemService cartItemService = new CartItemService();
 
+    private static final OrderService orderService = new OrderService();
 
     public static void main(String[] args) {
 
@@ -324,7 +326,8 @@ public class PatikaStoreMain {
             System.out.println("4 - Sepete Ürün Ekle ");
             System.out.println("5 - Sepeti Görüntüle");
             System.out.println("6 - Sepeti Temizle");
-            System.out.println("7 - Siparişleri listle");
+            System.out.println("7 - Sepetteki Ürünleri Sipariş Et");
+            System.out.println("8 - Siparişleri listle");
             System.out.println("0 - Geri");
             System.out.print("Seçim Yapınız :");
             String choice = scanner.nextLine();
@@ -349,6 +352,9 @@ public class PatikaStoreMain {
                     clearCart();
                     break;
                 case "7":
+                    createOrder();
+                    break;
+                case "8":
                     orderList();
                     break;
                 case "0":
@@ -360,12 +366,24 @@ public class PatikaStoreMain {
         }
     }
 
+    private static void createOrder() throws PatikaStoreException {
+
+        System.out.println("Bir ödeme yöntemi seçiniz : (CREDIT_CARD, DEBIT_CARD, PAYPAL, BANK_TRANSFER");
+        String paymentMethodStr = scanner.nextLine();
+
+        orderService.save(LOGINNED_CUSTOMER, PaymentMethod.valueOf(paymentMethodStr));
+
+
+    }
+
     private static void clearCart() {
+        cartService.clear(LOGINNED_CUSTOMER);
+
     }
 
     private static void listCart() {
 
-       List<CartItem> cartItems =  cartItemService.getByCustomer(LOGINNED_CUSTOMER);
+        List<CartItem> cartItems = cartItemService.getByCustomer(LOGINNED_CUSTOMER);
         System.out.println("\n==== Sepetteki Ürün Listesi ====");
 
         cartItems.forEach(item ->

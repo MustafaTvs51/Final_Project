@@ -87,7 +87,7 @@ CREATE TABLE cart(
     updatedDate         date default current_date
 
 )
-
+FİRST DROP
 NEW CART SYSTEM
 
 CREATE TABLE cart
@@ -107,6 +107,17 @@ CREATE TABLE cart_items
 
 
 ALTER TABLE cart ADD COLUMN total_amount INT;
+
+
+CREATE TABLE order_item
+(
+    id            SERIAL PRIMARY KEY,
+    order_id      INT REFERENCES "order" (id),
+    product_id    INT REFERENCES "product" (id),
+    quantity      INT            NOT NULL,
+    price         numeric(10, 2) NOT NULL
+
+)
 
 
 

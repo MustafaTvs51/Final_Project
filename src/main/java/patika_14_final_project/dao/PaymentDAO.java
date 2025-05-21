@@ -4,15 +4,14 @@ import patika_14_final_project.dao.Constants.SqlScriptConstants;
 import patika_14_final_project.model.Payment;
 import patika_14_final_project.util.DBUtil;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 public class PaymentDAO implements BaseDAO<Payment>{
 
-    public void save(Payment payment) {
+    public long save(Payment payment) {
+
+        long id = 0;
 
         try (Connection connection = DBUtil.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.PAYMENT_SAVE);
@@ -21,9 +20,16 @@ public class PaymentDAO implements BaseDAO<Payment>{
             ps.setBigDecimal(3,payment.getAmount());
             ps.executeUpdate();
 
+            ResultSet rs = ps.getGeneratedKeys();
+
+            if (rs.next()){
+                id= rs.getLong(1);
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return id;
     }
 
     @Override

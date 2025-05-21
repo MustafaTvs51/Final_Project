@@ -5,22 +5,21 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class Order extends BaseModel {
-    public Order() {
-        this.orderDate = LocalDateTime.now();
-    }
+
 
     private Customer customer;
     private BigDecimal totalAmount;
     private LocalDateTime orderDate;
-    private List<Product> products;
+    private List<OrderItems> orderItems;
 
-    public List<Product> getProducts() {
-        return products;
+    public Order() {
+        this.orderDate = LocalDateTime.now();
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public Order(Long id) {
+        this.setId(id);
     }
+
 
     public Order(Customer customer) {
         this.customer = customer;
@@ -50,5 +49,13 @@ public class Order extends BaseModel {
 
     public void setOrderDate(LocalDateTime orderDate) {
         this.orderDate = orderDate;
+    }
+
+    public List<OrderItems> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItems> orderItems) {
+        this.orderItems = orderItems;
     }
 }

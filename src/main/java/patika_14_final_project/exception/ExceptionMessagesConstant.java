@@ -3,8 +3,6 @@ package patika_14_final_project.exception;
 public class ExceptionMessagesConstant {
 
 
-
-
     private ExceptionMessagesConstant(){
     }
 
@@ -24,5 +22,7 @@ public class ExceptionMessagesConstant {
 
 
     public static final String PRODUCT_STOCK_IS_NOT_VALID = "İstenilen ürünün yeterli stok adeti bulunmamaktadır !  ";
+
+    public static final String CART_ITEMS_IS_EMPTY = "Sepetiniz boş";
 
 }

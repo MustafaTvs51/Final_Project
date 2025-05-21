@@ -14,7 +14,7 @@ import java.util.List;
 public class UserDAO implements BaseDAO<User> {
 
     @Override
-    public void save(User user) {
+    public long save(User user) {
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.USER_SAVE)) {
             ps.setString(1,user.getUsername());
@@ -27,7 +27,7 @@ public class UserDAO implements BaseDAO<User> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+return 0;
     }
 
     @Override

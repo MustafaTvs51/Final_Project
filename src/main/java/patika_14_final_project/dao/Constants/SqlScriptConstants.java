@@ -37,6 +37,13 @@ public class SqlScriptConstants {
     public static final String CART_SAVE = """
 
             """;
+    public static final String CART_ITEM_DELETE = """
+            DELETE FROM cart_items WHERE cart_id = ?
+            """;
+    public static final String ORDER_ITEMS_SAVE = """
+            INSERT INTO order_item (order_id, product_id, quantity, price)
+            VALUES(?,?,?,?)
+            """;
 
 
     private SqlScriptConstants() {
@@ -56,13 +63,14 @@ public class SqlScriptConstants {
             """;
 
     public static final String CUSTOMER_EXIST_BY_EMAIL = """
-            SELECT * FROM customer WHERE email = ? 
+            SELECT * FROM customer WHERE email = ?
             """;
 
 
     public static final String ORDER_SAVE = """
             INSERT INTO \"order\" (customer_id,order_date,total_amount)
-            VALUES(?,?,?,?,?)
+            VALUES(?,?,?)
+            RETURNING id
             """;
 
     public static final String PAYMENT_SAVE = """

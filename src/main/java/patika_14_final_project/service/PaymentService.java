@@ -9,9 +9,16 @@ public class PaymentService {
 
     private final PaymentDAO paymentDAO;
 
+    public PaymentService() {
+        this.paymentDAO = new PaymentDAO();
+
+    }
+
     public PaymentService(PaymentDAO paymentDAO) {
         this.paymentDAO = new PaymentDAO();
     }
+
+
 
     public Payment save(Order order, PaymentMethod paymentMethod){
 

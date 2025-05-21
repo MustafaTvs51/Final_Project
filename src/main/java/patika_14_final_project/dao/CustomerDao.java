@@ -8,9 +8,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerDao implements BaseDAO<Customer>{
+public class CustomerDao implements BaseDAO<Customer> {
 
-    public void save(Customer customer) {
+    public long save(Customer customer) {
         try (Connection connection = DBUtil.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.CUSTOMER_SAVE);
             ps.setString(1, customer.getName());
@@ -22,7 +22,7 @@ public class CustomerDao implements BaseDAO<Customer>{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        return 0;
     }
 
     public Customer findById(long id) {

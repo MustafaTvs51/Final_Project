@@ -78,7 +78,13 @@ public class OrderService {
 
         cartService.clear(customer);
 
-        productService.updateStock(new Product(), 4);
+
+        cartItems.forEach(cartItem -> {
+            Product product = new Product(cartItem.getProduct().getId());
+
+            productService.updateStock(product, cartItem.getQuantity());
+        });
+
 
         System.out.println("Sipariş ve ödeme işlemi başarıyla tamamlandı.");
         return order;

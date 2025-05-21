@@ -54,7 +54,11 @@ public class ProductService {
         return productDAO.findByName(productName);
     }
 
-    public void updateStock(Product product, int stock) {
+    public void updateStock(Product product, int quantity) {
+        Product foundProduct = productDAO.findById(product.getId());
+        productDAO.updateStock(foundProduct.getStock() - quantity, product.getId());
+        System.out.println("Ürün stok bilgileri güncellendi !");
+
 
 
     }

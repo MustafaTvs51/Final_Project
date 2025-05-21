@@ -3,13 +3,10 @@ package patika_14_final_project.dao;
 import patika_14_final_project.constants.PatikaStoreConstants;
 import patika_14_final_project.dao.Constants.SqlScriptConstants;
 import patika_14_final_project.model.Category;
-import patika_14_final_project.model.Customer;
 import patika_14_final_project.model.Product;
 import patika_14_final_project.util.DBUtil;
 
-import java.math.BigDecimal;
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,12 +45,31 @@ public class ProductDAO implements BaseDAO<Product> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-return 0;
+        return 0;
     }
 
     @Override
     public Product findById(long id) {
-        return null;
+       Product product = null;
+
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.PRODUCT_FIND_BY_ID)) {
+            ps.setLong(1,id);
+
+            ResultSet rs = ps.executeQuery();
+
+
+            while (rs.next()) {
+                product = new Product(rs.getLong("id"),
+                        rs.getString("name"),
+                        rs.getBigDecimal("price"),
+                        rs.getInt("stock"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return product;
     }
 
     @Override
@@ -117,11 +133,11 @@ return 0;
     }
 
     private Product getProduct(ResultSet rs) throws SQLException {
-       return new Product(rs.getLong("id"),
-            rs.getString("name"),
-            rs.getBigDecimal("price"),
-            rs.getInt("stock"),
-            new Category(rs.getLong("category_id"),rs.getString("category_name")));
+        return new Product(rs.getLong("id"),
+                rs.getString("name"),
+                rs.getBigDecimal("price"),
+                rs.getInt("stock"),
+                new Category(rs.getLong("category_id"), rs.getString("category_name")));
     }
 
     public List<Product> findAllByCategoryName(String categoryName) {
@@ -147,7 +163,6 @@ return 0;
 
         Product product = null;
 
-        List<Product> products = new ArrayList<>();
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.PRODUCT_FIND_BY_NAME)) {
             ps.setString(1, productName);
@@ -166,6 +181,21 @@ return 0;
         }
 
         return product;
+    }
+
+    public void updateStock(int newStock, Long id) {
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement ps = connection.prepareStatement(SqlScriptConstants.PRODUCT_UPDATE_STOCK)) {
+            ps.setInt(1, newStock);
+            ps.setLong(2, id);
+            ps.executeUpdate();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }
 

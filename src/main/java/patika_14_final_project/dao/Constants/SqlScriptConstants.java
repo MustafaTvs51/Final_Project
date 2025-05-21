@@ -44,7 +44,9 @@ public class SqlScriptConstants {
             INSERT INTO order_item (order_id, product_id, quantity, price)
             VALUES(?,?,?,?)
             """;
-
+    public static final String PRODUCT_UPDATE_STOCK = """
+            UPDATE product SET stock = ? WHERE id = ?
+            """;
 
     private SqlScriptConstants() {
     }
@@ -94,6 +96,11 @@ public class SqlScriptConstants {
             INSERT INTO product (name,price,stock,category_id,created_by,updated_by)
             VALUES(?,?,?,?,?,?)
             """;
+
+    public static final String PRODUCT_FIND_BY_ID = """
+            SELECT * FROM product WHERE id = ?
+            """;
+
     public static final String PRODUCT_FIND_ALL = """
             SELECT p.id as id,
                 p.name as name,

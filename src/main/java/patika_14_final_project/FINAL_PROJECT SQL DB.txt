@@ -88,6 +88,26 @@ CREATE TABLE cart(
 
 )
 
+NEW CART SYSTEM
+
+CREATE TABLE cart
+(
+    id              SERIAL PRIMARY KEY,
+    customer_id     INT,
+    createddate     timestamp DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE cart_items
+(
+     id             SERIAL PRIMARY KEY,
+     cart_id        INT NOT NULL REFERENCES cart(id),
+     product_id     INT NOT NULL REFERENCES product(id),
+     quantity       INT NOT NULL
+);
+
+
+ALTER TABLE cart ADD COLUMN total_amount INT;
+
 
 
 

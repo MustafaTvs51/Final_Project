@@ -4,22 +4,40 @@ public class SqlScriptConstants {
 
 
     public static final String CART_FIND_BY_CUSTOMER_ID = """
-            SELECT * FROM cart WHERE customer_id = ?
-            """;
-    public static final String CART_SAVE = """
-            INSERT INTO cart (customer_id, product_id, quantity)
-            VALUES(?,?,?)
-            """;
-    public static final String CART_FIND_ALL_BY_CUSTOMER_ID = """
+           SELECT *
+           FROM cart
+           WHERE customer_id = ?
+           """;
+    public static final String CART_ITEM_FIND_BY_CUSTOMER_ID = """
             SELECT
-            	p.name as product_name,
-            	p.price as price,
-            	c.quantity as quantity
-            FROM cart c
-            		JOIN public.product p ON p.id = c.product_id
-            WHERE customer_id = ?
-            ORDER BY c.createddate DESC
+                    ci.id       as cart_item_id,
+                    ci.quantity as quantity,
+                    p.id        as product_id,
+                    p.name      as product_name,
+                    p.price     as price
+            FROM cart_items ci
+                        JOIN cart c on c.id = ci.cart_id
+                        JOIN public.product p ON p.id = ci.product_id
+            WHERE c.customer_id = ?
             """;
+    public static final String CART_ITEM_SAVE = """
+            INSERT INTO cart_items (cart_id, product_id, quantity)
+            VALUES(?,?,?)
+        """;
+    public static final String CART_FIND_ALL_BY_CUSTOMER_ID = """
+        SELECT
+            p.name as product_name,
+            p.price as price,
+            ci.quantity as quantity
+        FROM cart c
+                    JOIN public.product p ON p.id = c.product_id
+        WHERE customer_id = ?
+        ORDER BY c.createddate DESC
+        """;
+    public static final String CART_SAVE = """
+
+            """;
+
 
     private SqlScriptConstants() {
     }
@@ -53,16 +71,16 @@ public class SqlScriptConstants {
             """;
 
     public static final String PRODUCT_SEARCH_BY_NAME = """
-        SELECT p.id         as id,
-               p.name       as name,
-               p.price      as price,       
-               p.stock      as stock,
-               c.id         as category_id,
-               c.name       as category_name
-        FROM product p
-                 LEFT JOIN public.category c ON c.id = p.category_id
-        WHERE p.name LIKE ?
-        """;
+            SELECT p.id         as id,
+                   p.name       as name,
+                   p.price      as price,
+                   p.stock      as stock,
+                   c.id         as category_id,
+                   c.name       as category_name
+            FROM product p
+                     LEFT JOIN public.category c ON c.id = p.category_id
+            WHERE p.name LIKE ?
+            """;
 
     public static final String PRODUCT_SAVE = """
             INSERT INTO product (name,price,stock,category_id,created_by,updated_by)
@@ -91,7 +109,7 @@ public class SqlScriptConstants {
 
     public static final String PRODUCT_TOTAL_PAGE_COUNT = """
             SELECT COUNT(*) FROM product
-            """ ;
+            """;
     public static final String PRODUCT_FIND_BY_CATEGORY_NAME = """
             SELECT p.id as id,
                 p.name as name,
@@ -129,7 +147,6 @@ public class SqlScriptConstants {
     public static final String CATEGORY_FIND_ALL = """
             SELECT * FROM category
             """;
-
 
 
 }

@@ -1,6 +1,7 @@
 package patika_14_final_project.service;
 
 import patika_14_final_project.dao.CartDAO;
+import patika_14_final_project.dao.CartItemDAO;
 import patika_14_final_project.model.Cart;
 import patika_14_final_project.model.CartItem;
 import patika_14_final_project.model.Customer;
@@ -12,32 +13,30 @@ public class CartService {
 
     private CartDAO cartDAO;
 
-    public CartService() {
-        this.cartDAO = new CartDAO();
-    }
+    private CartItemDAO cartItemDAO;
 
-    public Cart getByCustomerId(long customerid){
-        return cartDAO.findByCustomerId(customerid);
+    public CartService() {
+        cartDAO = new CartDAO();
+        cartItemDAO = new CartItemDAO();
     }
 
     public void addToCart(Customer loginnedCustomer, Product product, int quantity) {
-        Cart cart = getByCustomerId(loginnedCustomer.getId());
+        Cart cart = cartDAO.findByCustomerId(loginnedCustomer.getId());
 
         if (cart == null) {
             cart = new Cart();
+            cart.setCustomer(loginnedCustomer);
+            cartDAO.save(cart);
         }
 
-        cart.getItems().add(new CartItem(product));
+        CartItem cartItem = new CartItem();
+        cartItem.setProduct(product);
+        cartItem.setQuantity(quantity);
+        cartItem.setCart(cart);
 
-        cartDAO.save(new Cart(loginnedCustomer.getId(),product.getId(),quantity));
+        cartItemDAO.save(cartItem);
+
         System.out.print("Ürün Sepetinize Eklendi\n");
-
     }
 
-    public List<Cart> getAll(Customer loginnedCustomer) {
-
-        return cartDAO.findAllByCustomerId(loginnedCustomer.getId());
-
-
-    }
 }

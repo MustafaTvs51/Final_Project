@@ -6,6 +6,11 @@ import java.math.BigDecimal;
 
 public class Product extends BaseModel{
 
+    private  String name;
+    private BigDecimal price;
+    private  int stock;
+    private Category category;
+
     public Product() {
     }
 
@@ -17,10 +22,18 @@ public class Product extends BaseModel{
         this.name = name;
     }
 
-    private  String name;
-    private BigDecimal price;
-    private  int stock;
-    private Category category;
+    public Product(long id, String name) {
+        this.setId(id);
+        this.name = name;
+    }
+
+    public Product(long id, String name, BigDecimal price) {
+        this.setId(id);
+        this.name = name;
+        this.price = price;
+    }
+
+
 
     public Product(Long id,String name, BigDecimal price, int stock, Category category) {
         this.setId(id);

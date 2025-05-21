@@ -26,6 +26,8 @@ public class PatikaStoreMain {
 
     private static final CartService cartService = new CartService();
 
+    private static final CartItemService cartItemService = new CartItemService();
+
 
     public static void main(String[] args) {
 
@@ -363,14 +365,14 @@ public class PatikaStoreMain {
 
     private static void listCart() {
 
-       List<Cart> carts =  cartService.getAll(LOGINNED_CUSTOMER);
+       List<CartItem> cartItems =  cartItemService.getByCustomer(LOGINNED_CUSTOMER);
         System.out.println("\n==== Sepetteki Ürün Listesi ====");
 
-        carts.forEach(cart ->
-                System.out.printf("%s - %s - %s\n",
-                        cart.getItems().get(0).getProduct().getName(),
-                        cart.getQuantity(),
-                        cart.getTotalAmount()));
+        cartItems.forEach(item ->
+                System.out.printf("%s - %s x %s\n",
+                        item.getProduct().getName(),
+                        item.getQuantity(),
+                        item.getProduct().getPrice()));
 
         System.out.println("========");
     }
